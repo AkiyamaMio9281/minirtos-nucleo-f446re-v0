@@ -31,8 +31,7 @@ make flash
 
 `make flash` uses OpenOCD's `board/st_nucleo_f4.cfg` with the onboard ST-LINK
 probe. The board should reset into the firmware. Expected behavior: LD2
-blinks about once per second. This is a prediction, not a result of an
-on-board test.
+blinks about once per second.
 
 Alternative compile test with LLVM/Clang and LLD:
 
@@ -85,7 +84,10 @@ two arbitrarily timed samples.
 - No stack overflow checking or interrupt-safe application API.
 - Floating-point instructions are disabled by the build ABI; to enable FPU
   use in tasks later you must handle the additional floating-point context.
-- The firmware is compiled and inspected, **not tested on a physical board**.
+- Tested on one NUCLEO-F446RE, flashed with STM32CubeProgrammer. Reading memory
+  over SWD showed `ticks` advancing at about 1 kHz, both counters growing,
+  `current` taking both values and the PA5 output bit toggling. The LED itself
+  was not observed, and the `make flash` OpenOCD path has not been run.
 
 ## Next steps
 
