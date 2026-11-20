@@ -19,7 +19,10 @@ A small amount of ARM Thumb-2 assembly is necessary for context switching.
 ## Prerequisites
 
 - NUCLEO-F446RE connected by the **ST-LINK USB connector**.
-- ARM GNU Toolchain (`arm-none-eabi-gcc`), GNU Make, OpenOCD.
+- ARM GNU Toolchain (`arm-none-eabi-gcc`) and GNU Make.
+- STM32CubeProgrammer CLI (`STM32_Programmer_CLI`) for `make flash`. The copy
+  bundled with STM32CubeIDE is found automatically; otherwise it must be on PATH.
+- OpenOCD, only for `make debug-server`.
 - Optional: `arm-none-eabi-gdb` or `gdb-multiarch`.
 
 ## Build and flash
@@ -29,8 +32,9 @@ make
 make flash
 ```
 
-`make flash` uses OpenOCD's `board/st_nucleo_f4.cfg` with the onboard ST-LINK
-probe. The board should reset into the firmware. Expected behavior: LD2
+`make flash` programs and verifies the firmware through the onboard ST-LINK
+with STM32CubeProgrammer, then resets the board. To use another copy of the
+tool, run `make flash CUBEPROG=<path to STM32_Programmer_CLI>`. Expected behavior: LD2
 blinks about once per second.
 
 Alternative compile test with LLVM/Clang and LLD:
@@ -87,7 +91,8 @@ two arbitrarily timed samples.
 - Tested on one NUCLEO-F446RE, flashed with STM32CubeProgrammer. Reading memory
   over SWD showed `ticks` advancing at about 1 kHz, both counters growing,
   `current` taking both values and the PA5 output bit toggling. The LED itself
-  was not observed, and the `make flash` OpenOCD path has not been run.
+  was not observed. `make flash` was run with the GNU Make bundled with
+  STM32CubeIDE.
 
 ## Next steps
 
